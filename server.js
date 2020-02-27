@@ -1,14 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const requireDir = require('require-dir');
+const cors  = require('cors');
 
 const app = express();
+app.use(express.json());//server para o add receber json
+app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send("I");
-});
+mongoose.connect("mongodb+srv://admin:root@node-v001-nwj0m.mongodb.net/Produtos?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true  });
+requireDir('./src/models');
 
-mongoose.connect("mongodb+srv://admin:root@node-v001-nwj0m.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true  }
-);
-const PORTA = 90;
 
-app.listen(PORTA);
+const produto = mongoose.model('product');
+
+
+
+app.use('/api', require("./src/Routes"));
+
+app.listen(90);
+
+
